@@ -8,13 +8,6 @@
 #ifndef APPLICATION_APP_H_
 #define APPLICATION_APP_H_
 
-//#include "../HAL/lcd/lcd_interface.h"
-
-#include "../HAL/pb/pb_interface.h"
-#include "../HAL/led/led_interface.h"
-#include "../MCAL/gi/gi_interface.h"
-#include "../MCAL/exti/exti_interface.h"
-
 void appInit(void);
 void appMain(void);
 
