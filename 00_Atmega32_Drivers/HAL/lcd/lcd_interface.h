@@ -29,6 +29,7 @@ EN_HLCD_systemState_t HLCD_shiftDisplay(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstanc
 
 EN_HLCD_systemState_t HLCD_createNewCustomChar(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance , uint8_t *Copy_u8ArrayOfChar , uint8_t Copy_u8CgramPosition);
 
+EN_HLCD_systemState_t HLCD_Clr(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance);
 
 
 

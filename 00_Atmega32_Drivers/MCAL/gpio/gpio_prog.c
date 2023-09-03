@@ -196,26 +196,22 @@ EN_GPIO_systemState_t GPIO_togglePortLogic(EN_GPIO_mcuPorts_t copyPortName) {
 
 EN_GPIO_systemState_t GPIO_set4msbValue(EN_GPIO_mcuPorts_t copyPortName,uint8_t value)
 {
-	EN_GPIO_systemState_t gpioRet = GPIO_OK;
-	switch(copyPortName)
-	{
-	case GPIO_PORTA:
-		PORTA_REG &= 0x0F;
-		PORTA_REG |= value<<4;
-		break;
-	case GPIO_PORTB:
-		PORTB_REG &= 0x0F;
-		PORTB_REG |= value<<4;
-		break;
-	case GPIO_PORTC:
-		PORTC_REG &= 0x0F;
-		PORTC_REG |= value<<4;
-		break;
-	case GPIO_PORTD:
-		PORTD_REG &= 0x0F;
-		PORTD_REG |= value<<4;
-		break;
-	}
+	EN_GPIO_systemState_t gpioRet = GPIO_NOK;
+
+	*port_registers[copyPortName] &= 0x0F;
+	*port_registers[copyPortName] |= value<<4;
+
+	gpioRet = GPIO_OK;
+
 	return gpioRet;
 }
 
+EN_GPIO_systemState_t GPIO_SetPortValue(EN_GPIO_mcuPorts_t copyPortName , uint32_t value)
+{
+	EN_GPIO_systemState_t gpioRet = GPIO_NOK;
+
+	*port_registers[copyPortName] &= 0;
+	*port_registers[copyPortName] |= value;
+	gpioRet = GPIO_OK;
+	return gpioRet;
+}

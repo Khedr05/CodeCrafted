@@ -18,44 +18,98 @@ EN_HLCD_systemState_t HLCD_init(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance)
 	if(PTR_NULL != ST_ptrLcdCfgInstance)
 	{
 
+		ST_GPIO_cfg_t rsPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rsPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t rwPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rwPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t enPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->enPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+
+		gpioRet = GPIO_initPin(&rsPin);
+
+		if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&rwPin);
+		else lcdRet = HLCD_NOK;
+
+		if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&enPin);
+		else lcdRet = HLCD_NOK;
+
 		if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_4_BIT_MODE)
 		{
 			/* TODO : Handling The 4bit Mode */
+
+			ST_GPIO_cfg_t d4Pin =
+			{
+					.portName = ST_ptrLcdCfgInstance->dataPort,
+					.pinNumber = ST_ptrLcdCfgInstance->d4Pin,
+					.logicOnPin = GPIO_LOW,
+					.pinDirection = GPIO_OUTPUT
+			};
+			ST_GPIO_cfg_t d5Pin =
+			{
+					.portName = ST_ptrLcdCfgInstance->dataPort,
+					.pinNumber = ST_ptrLcdCfgInstance->d5Pin,
+					.logicOnPin = GPIO_LOW,
+					.pinDirection = GPIO_OUTPUT
+			};
+			ST_GPIO_cfg_t d6Pin =
+			{
+					.portName = ST_ptrLcdCfgInstance->dataPort,
+					.pinNumber = ST_ptrLcdCfgInstance->d6Pin,
+					.logicOnPin = GPIO_LOW,
+					.pinDirection = GPIO_OUTPUT
+			};
+			ST_GPIO_cfg_t d7Pin =
+			{
+					.portName = ST_ptrLcdCfgInstance->dataPort,
+					.pinNumber = ST_ptrLcdCfgInstance->d7Pin,
+					.logicOnPin = GPIO_LOW,
+					.pinDirection = GPIO_OUTPUT
+			};
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&d4Pin);
+			else lcdRet = HLCD_NOK;
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&d5Pin);
+			else lcdRet = HLCD_NOK;
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&d6Pin);
+			else lcdRet = HLCD_NOK;
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&d7Pin);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(30);
+
+			HLCD_sendCmd(ST_ptrLcdCfgInstance ,FUNCTION_SET);
+			_delay_ms(50);
+			HLCD_sendCmd(ST_ptrLcdCfgInstance ,DISPLAY_ON_OFF);
+			_delay_ms(50);
+			HLCD_sendCmd(ST_ptrLcdCfgInstance ,DISPLAY_CLR);
+			_delay_ms(50);
+			HLCD_sendCmd(ST_ptrLcdCfgInstance ,ENTRY_MODE);
+			_delay_ms(50);
+
 		}
 		else if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_8_BIT_MODE)
 		{
-			ST_GPIO_cfg_t rsPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rsPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t rwPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rwPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t enPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->enPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-
-			gpioRet = GPIO_initPin(&rsPin);
-
-			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&rwPin);
-			else lcdRet = HLCD_NOK;
-
-			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPin(&enPin);
-			else lcdRet = HLCD_NOK;
 
 			if(gpioRet == GPIO_OK)gpioRet = GPIO_initPort(ST_ptrLcdCfgInstance->dataPort,GPIO_OUTPUT,GPIO_LOW);
 			else lcdRet = HLCD_NOK;
@@ -100,49 +154,84 @@ EN_HLCD_systemState_t HLCD_sendCmd(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance , u
 
 	if(PTR_NULL != ST_ptrLcdCfgInstance)
 	{
+		ST_GPIO_cfg_t rsPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rsPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t rwPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rwPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t enPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->enPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		gpioRet = GPIO_writePinLogic(&rsPin,GPIO_LOW);
+		if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&rwPin,GPIO_LOW);
+		else lcdRet = HLCD_NOK;
+
+		_delay_ms(30);
+
+
 		if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_4_BIT_MODE)
 		{
 			/* TODO : Handling The 4bit Mode */
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(50);
+			//PORTB_REG &= 0;
+			//PORTB_REG |= Copy_u8Command;
+
+			//PORTB_REG = (PORTB_REG & 0x0F) | (Copy_u8Command & 0xF0);
+			GPIO_set4msbValue(ST_ptrLcdCfgInstance->dataPort,Copy_u8Command>>4);
+
+			_delay_ms(50);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_LOW);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(50);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(50);
+			//PORTB_REG &= 0;
+			//PORTB_REG |= (Copy_u8Command<<4);
+			//PORTB_REG = (PORTB_REG & 0x0F) | ((Copy_u8Command& 0xF0) << 4);
+
+			GPIO_set4msbValue(ST_ptrLcdCfgInstance->dataPort,Copy_u8Command);
+
+			_delay_ms(50);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_LOW);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(50);
 		}
 		else if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_8_BIT_MODE)
 		{
-			ST_GPIO_cfg_t rsPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rsPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t rwPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rwPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t enPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->enPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			gpioRet = GPIO_writePinLogic(&rsPin,GPIO_LOW);
-			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&rwPin,GPIO_LOW);
-			else lcdRet = HLCD_NOK;
-
-			_delay_ms(1);
 
 			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
 			else lcdRet = HLCD_NOK;
 
 			_delay_ms(1);
+			GPIO_SetPortValue(ST_ptrLcdCfgInstance->dataPort, Copy_u8Command);
 
-			PORTB_REG &= 0;
-			PORTB_REG |= Copy_u8Command;
 
 			_delay_ms(1);
 
@@ -151,14 +240,14 @@ EN_HLCD_systemState_t HLCD_sendCmd(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance , u
 
 			_delay_ms(1);
 
-			if(gpioRet == GPIO_OK)lcdRet = HLCD_OK;
-			else lcdRet = HLCD_NOK;
-
 		}
 		else
 		{
 			lcdRet = HLCD_INVALID_DATA_BIT_MODE;
 		}
+
+		if(gpioRet == GPIO_OK)lcdRet = HLCD_OK;
+		else lcdRet = HLCD_NOK;
 	}
 	else
 	{
@@ -175,49 +264,90 @@ EN_HLCD_systemState_t HLCD_displayChar(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance
 
 	if(PTR_NULL != ST_ptrLcdCfgInstance)
 	{
+
+		ST_GPIO_cfg_t rsPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rsPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t rwPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->rwPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		ST_GPIO_cfg_t enPin =
+		{
+				.portName = ST_ptrLcdCfgInstance->controlPort,
+				.pinNumber = ST_ptrLcdCfgInstance->enPin,
+				.logicOnPin = GPIO_LOW,
+				.pinDirection = GPIO_OUTPUT
+		};
+
+		gpioRet = GPIO_writePinLogic(&rsPin,GPIO_HIGH);
+		if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&rwPin,GPIO_LOW);
+		else lcdRet = HLCD_NOK;
+
+		_delay_ms(30);
+
 		if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_4_BIT_MODE)
 		{
 			/* TODO : Handling The 4bit Mode */
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(30);
+
+			//PORTB_REG &= 0;
+			//PORTB_REG |= Copy_u8Char;
+
+			//PORTB_REG = (PORTB_REG & 0x0F) | (Copy_u8Char & 0xF0);
+
+			GPIO_set4msbValue(ST_ptrLcdCfgInstance->dataPort,Copy_u8Char>>4);
+
+
+			_delay_ms(30);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_LOW);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(30);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(30);
+
+			//PORTB_REG &= 0;
+			//PORTB_REG |= (Copy_u8Char<<4);
+
+			//PORTB_REG = (PORTB_REG & 0x0F) | ((Copy_u8Char& 0xF0) << 4);
+
+			GPIO_set4msbValue(ST_ptrLcdCfgInstance->dataPort,Copy_u8Char);
+
+			_delay_ms(30);
+
+			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_LOW);
+			else lcdRet = HLCD_NOK;
+
+			_delay_ms(30);
 		}
 		else if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_8_BIT_MODE)
 		{
-			ST_GPIO_cfg_t rsPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rsPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t rwPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->rwPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			ST_GPIO_cfg_t enPin =
-			{
-					.portName = ST_ptrLcdCfgInstance->controlPort,
-					.pinNumber = ST_ptrLcdCfgInstance->enPin,
-					.logicOnPin = GPIO_LOW,
-					.pinDirection = GPIO_OUTPUT
-			};
-
-			gpioRet = GPIO_writePinLogic(&rsPin,GPIO_HIGH);
-			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&rwPin,GPIO_LOW);
-			else lcdRet = HLCD_NOK;
-
-			_delay_ms(1);
 
 			if(gpioRet == GPIO_OK)gpioRet = GPIO_writePinLogic(&enPin,GPIO_HIGH);
 			else lcdRet = HLCD_NOK;
 
 			_delay_ms(1);
 
-			PORTB_REG &= 0;
-			PORTB_REG |= Copy_u8Char;
+			GPIO_SetPortValue(ST_ptrLcdCfgInstance->dataPort, Copy_u8Char);
+
 
 			_delay_ms(1);
 
@@ -226,14 +356,14 @@ EN_HLCD_systemState_t HLCD_displayChar(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance
 
 			_delay_ms(1);
 
-			if(gpioRet == GPIO_OK)lcdRet = HLCD_OK;
-			else lcdRet = HLCD_NOK;
-
 		}
 		else
 		{
 			lcdRet = HLCD_INVALID_DATA_BIT_MODE;
 		}
+
+		if(gpioRet == GPIO_OK)lcdRet = HLCD_OK;
+		else lcdRet = HLCD_NOK;
 	}
 	else
 	{
@@ -286,37 +416,11 @@ EN_HLCD_systemState_t HLCD_displayNumber(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstan
 		}
 		else if(ST_ptrLcdCfgInstance->dataPinsMode == HLCD_8_BIT_MODE)
 		{
-			uint8_t numberCounter = 0;
-			uint8_t digitsCounter = 0;
-			uint8_t bufferForNumbers[11];
+			uint8_t bufferForNumbers[20];
 
-			if(Copy_u8Number == 0)
-			{
-				lcdRet = HLCD_displayChar(ST_ptrLcdCfgInstance,'0');
-			}
-			else
-			{
-				while(Copy_u8Number)
-				{
-					if(digitsCounter == 0)
-					{
-						bufferForNumbers[digitsCounter] = STR_NULL;
-						digitsCounter++;
-					}
-					else
-					{
-						bufferForNumbers[digitsCounter] = Copy_u8Number%10;
-						Copy_u8Number /=10;
-						digitsCounter++;
-					}
-				}
+			itoa(Copy_u8Number ,(char *)bufferForNumbers,10);
+			HLCD_displayString(ST_ptrLcdCfgInstance,(uint8_t *)bufferForNumbers);
 
-				numberCounter = (digitsCounter-1);
-				for(; bufferForNumbers[numberCounter] != STR_NULL ; numberCounter--)
-				{
-					lcdRet = HLCD_displayChar(ST_ptrLcdCfgInstance,((bufferForNumbers[numberCounter])+48));
-				}
-			}
 		}
 		else
 		{
@@ -443,5 +547,14 @@ EN_HLCD_systemState_t HLCD_createNewCustomChar(ST_HLCD_cfg_t const *ST_ptrLcdCfg
 	{
 		lcdRet = HLCD_PTR_NULL;
 	}
+	return lcdRet;
+}
+
+EN_HLCD_systemState_t HLCD_Clr(ST_HLCD_cfg_t const *ST_ptrLcdCfgInstance)
+{
+	EN_HLCD_systemState_t lcdRet = HLCD_NOK;
+
+	lcdRet = HLCD_sendCmd(ST_ptrLcdCfgInstance, CLEAR_COMMAND);
+
 	return lcdRet;
 }

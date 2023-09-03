@@ -9,7 +9,7 @@
 #define COMMON_STD_TYPES_H_
 
 typedef unsigned char                        uint8_t     ;
-//typedef unsigned short int                   uint16_t    ;
+typedef unsigned short int                   Uint16_t    ;
 typedef unsigned long  int                   uint32_t    ;
 typedef signed   char                        sint8_t     ;
 typedef signed   short int                   sint16_t    ;

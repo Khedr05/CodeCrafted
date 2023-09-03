@@ -11,7 +11,10 @@
 #include "../../MCAL/gpio/gpio_interface.h"
 
 #define CLEAR_COMMAND	0x01
+
 #define TWO_LINE_LCD_EIGHT_BIT_MODE		0x38
+#define TWO_LINE_LCD_FOUR_BIT_MODE		0x2C
+
 #define CURSOR_ON	0x0E
 #define CURSOR_OFF 	0x0C
 #define SET_CURSOR_LOCATION		0x80
@@ -23,6 +26,11 @@
 
 #define RIGHT  0x1C
 #define LEFT   0x18
+
+#define FUNCTION_SET	0b00101000
+#define DISPLAY_ON_OFF	0b00001111
+#define DISPLAY_CLR		0b00000001
+#define ENTRY_MODE		0b00000110
 
 
 

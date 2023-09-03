@@ -45,5 +45,6 @@ EN_GPIO_systemState_t GPIO_togglePortLogic(EN_GPIO_mcuPorts_t copyPortName);
 
 EN_GPIO_systemState_t GPIO_set4msbValue(EN_GPIO_mcuPorts_t copyPortName,uint8_t value);
 
+EN_GPIO_systemState_t GPIO_SetPortValue(EN_GPIO_mcuPorts_t copyPortName , uint32_t value);
 
 #endif /* MCAL_GPIO_GPIO_INTERFACE_H_ */

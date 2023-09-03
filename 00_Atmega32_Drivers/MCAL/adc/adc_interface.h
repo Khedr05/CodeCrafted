@@ -18,7 +18,7 @@
 EN_MADC_systeamState_t MADC_init(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t);
 EN_MADC_systeamState_t MADC_deinit(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t);
 EN_MADC_systeamState_t MADC_startConversion(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t);
-EN_MADC_systeamState_t MADC_getConversionResult(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t, uint16_T *_ConversionResult);
+EN_MADC_systeamState_t MADC_getConversionResult(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t, Uint16_t *_ConversionResult);
 
 
 #endif /* MCAL_ADC_ADC_INTERFACE_H_ */

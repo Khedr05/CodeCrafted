@@ -95,7 +95,7 @@ EN_MADC_systeamState_t MADC_startConversion(ST_MADC_CFG_t const * ST_ptrAdcCfgIn
 	return adcRet;
 }
 
-EN_MADC_systeamState_t MADC_getConversionResult(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t, uint16_T *_ConversionResult)
+EN_MADC_systeamState_t MADC_getConversionResult(ST_MADC_CFG_t const * ST_ptrAdcCfgInstance_t, Uint16_t *_ConversionResult)
 {
 	EN_MADC_systeamState_t adcRet = MADC_NOK;
 
@@ -108,8 +108,8 @@ EN_MADC_systeamState_t MADC_getConversionResult(ST_MADC_CFG_t const * ST_ptrAdcC
 
 		switch(ST_ptrAdcCfgInstance_t->resultAdjust)
 		{
-		case MADC_RIGHT_ADJUST  : *_ConversionResult = (uint16_T)(ADCL_REG + (ADCH_REG << 8)); adcRet = MADC_OK;  break;
-		case MADC_LEFT_ADJUST	:  *_ConversionResult = (uint16_T)((ADCL_REG + (ADCH_REG << 8))>>6); adcRet = MADC_OK; break;
+		case MADC_RIGHT_ADJUST  : *_ConversionResult = (Uint16_t)(ADCL_REG + (ADCH_REG << 8)); adcRet = MADC_OK;  break;
+		case MADC_LEFT_ADJUST	:  *_ConversionResult = (Uint16_t)((ADCL_REG + (ADCH_REG << 8))>>6); adcRet = MADC_OK; break;
 		default 				: adcRet = MADC_NOK; break;
 		}
 	}
